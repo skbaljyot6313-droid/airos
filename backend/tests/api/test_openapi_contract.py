@@ -2,7 +2,12 @@ from app.main import app
 
 
 def test_mobile_routes_are_registered():
-    routes = {(route.path, method) for route in app.routes for method in getattr(route, "methods", set())}
+    spec = app.openapi()
+    routes = {
+        (path, method.upper())
+        for path, operations in spec["paths"].items()
+        for method in operations
+    }
     expected = {
         ("/api/v1/auth/login", "POST"),
         ("/api/v1/auth/refresh", "POST"),

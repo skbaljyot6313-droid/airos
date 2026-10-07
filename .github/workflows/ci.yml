@@ -21,13 +21,6 @@ jobs:
           cache-dependency-path: backend/requirements.txt
       - name: Install dependencies
         run: pip install -r requirements.txt
-      - name: Debug app routes
-        run: python -c "from app.main import app; print(sorted(set(r.path for r in app.routes)))"
-        env:
-          APP_ENV: test
-          DEBUG: "true"
-          JWT_SECRET_KEY: ci-only-insecure-test-secret
-          DATABASE_URL: postgresql+asyncpg://ci:ci@localhost:5432/ci
       - name: Run tests
         run: python -m pytest
         env:
